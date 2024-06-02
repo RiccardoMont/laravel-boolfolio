@@ -12,6 +12,7 @@
     <tr>
         <th>ID</th>
         <th>Category</th>
+        <th>Technologies</th>
         <th>Name</th>
         <th>Cover Image</th>
         <th>Description</th>
@@ -24,6 +25,9 @@
         <td>{{$project->id}}</td>
         <td>
             {{$project->category ? $project->category->name : 'N/A'}}
+        </td>
+        <td>
+            @include('partials.pills')
         </td>
         <td>{{$project->name}}</td>
         <td>

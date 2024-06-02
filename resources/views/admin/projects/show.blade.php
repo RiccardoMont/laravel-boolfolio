@@ -20,9 +20,7 @@
                 </div>
                 <div class="techs">
                     <strong>Technologies: </strong>
-                    @foreach($project->technologies as $tech)
-                    <span class="badge rounded-pill text-bg-primary">{{$tech->name}}</span>
-                    @endforeach
+                    @include('partials.pills')
                 </div>
             </div>
             <p class="text-break">{{$project->description ?? 'N/A'}}</p>
