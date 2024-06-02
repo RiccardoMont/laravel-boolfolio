@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Category;
+use App\Models\Technology;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -33,8 +34,9 @@ class ProjectController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $technologies = Technology::all();
 
-        return view('admin.projects.create', compact('categories'));
+        return view('admin.projects.create', compact('categories', 'technologies'));
     }
 
     /**
@@ -55,7 +57,11 @@ class ProjectController extends Controller
         $validated['user_id'] = auth()->id();
 
 
-        Project::create($validated);
+        $project = Project::create($validated);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->attach($validated['technologies']);
+        }
 
         return to_route('admin.projects.index')->with('message', 'New project created successfully!');
     }
@@ -77,8 +83,9 @@ class ProjectController extends Controller
 
         if ($project->user_id == auth()->id()) {
             $categories = Category::all();
+            $technologies = Technology::all();
 
-            return view('admin.projects.edit', compact('project', 'categories'));
+            return view('admin.projects.edit', compact('project', 'categories', 'technologies'));
         }
         abort(403, 'Not authorize to this page');
     }
@@ -109,6 +116,10 @@ class ProjectController extends Controller
         }
 
         $project->update($validated);
+        
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($validated['technologies']);
+        }
 
         return to_route('admin.projects.index')->with('message', 'Project updated succesfully');
     }

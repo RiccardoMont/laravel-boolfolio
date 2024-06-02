@@ -14,8 +14,16 @@
         <div class="col-6 position-relative mx-4">
             <h3 class="text-uppercase fw-bold">{{$project->name}}</h3>
             <div class="metadata">
-                <strong>Category:</strong>
+                <div class="categories">
+                <strong>Category: </strong>
                 <em>{{$project->category ? $project->category->name : 'N/A'}}</em>
+                </div>
+                <div class="techs">
+                    <strong>Technologies: </strong>
+                    @foreach($project->technologies as $tech)
+                    <span class="badge rounded-pill text-bg-primary">{{$tech->name}}</span>
+                    @endforeach
+                </div>
             </div>
             <p class="text-break">{{$project->description ?? 'N/A'}}</p>
             <div class="d-flex justify-content-between">
@@ -24,7 +32,7 @@
             </div>
             <div class="position-absolute bottom-0 d-flex justify-content-between w-100">
                 <div class="author">
-                    <em>Id: {{$project->id}}</em>
+                    <em>By: {{$project->user->name}}</em>
                 </div>
                 <div class="project_id">
                     <em>Id: {{$project->id}}</em>
