@@ -11,7 +11,7 @@
         @else
         <img loading="lazy" class="rounded" width="50%" src="{{asset('storage/' . $project->cover_image)}}" alt="">
         @endif
-        <div class="col-6 position-relative px-4">
+        <div class="col-6 position-relative mx-4">
             <h3 class="text-uppercase fw-bold">{{$project->name}}</h3>
             <div class="metadata">
                 <strong>Category:</strong>
@@ -22,8 +22,13 @@
                 <a class="btn btn-primary" href="{{$project->project_url}}" target="_blank">Project Url</a>
                 <a class="btn btn-primary" href="{{$project->source_code_url}}" target="_blank">Source Code Url</a>
             </div>
-            <div class="position-absolute bottom-0 end-0">
-                <span class="fst-italic">Id: {{$project->id}}</span>
+            <div class="position-absolute bottom-0 d-flex justify-content-between w-100">
+                <div class="author">
+                    <em>Id: {{$project->id}}</em>
+                </div>
+                <div class="project_id">
+                    <em>Id: {{$project->id}}</em>
+                </div>
             </div>
         </div>
     </div>
