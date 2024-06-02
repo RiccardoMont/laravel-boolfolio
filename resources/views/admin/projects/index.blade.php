@@ -11,6 +11,7 @@
 <table class="table table-striped my-5">
     <tr>
         <th>ID</th>
+        <th>Category</th>
         <th>Name</th>
         <th>Cover Image</th>
         <th>Description</th>
@@ -21,6 +22,9 @@
     @forelse($projects as $project)
     <tr>
         <td>{{$project->id}}</td>
+        <td>
+            {{$project->category ? $project->category->name : 'N/A'}}
+        </td>
         <td>{{$project->name}}</td>
         <td>
             @if (Str::startsWith($project->cover_image, 'https://'))
@@ -68,7 +72,7 @@
 </table>
 
 
-{{$projects->links('pagination::bootstrap-5')}}
+<!--$projects->links('pagination::bootstrap-5')-->
 
 
 

@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -17,9 +18,13 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        //$projects = Project::where('user_id', auth()->id())->orderByDesc('id')->paginate(6);
+        $projects = Project::orderByDesc('id')->get();
+        $categories = Category::all();
 
-        return view('admin.projects.index', ['projects' => Project::orderByDesc('id')->paginate(6)]);
 
+        return view('admin.projects.index', compact('projects', 'categories'));
+        
     }
 
     /**
@@ -27,9 +32,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        
-        return view('admin.projects.create');
+        $categories = Category::all();
 
+        return view('admin.projects.create', compact('categories'));
     }
 
     /**
@@ -37,23 +42,22 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        
+
         $validated = $request->validated();
 
-        if($request->has('cover_image')){
+
+
+        if ($request->has('cover_image')) {
 
             $validated['cover_image'] = Storage::put('uploads', $request->cover_image);
-            
         }
+
+        $validated['user_id'] = auth()->id();
 
 
         Project::create($validated);
 
         return to_route('admin.projects.index')->with('message', 'New project created successfully!');
-
-
-
-
     }
 
     /**
@@ -63,7 +67,6 @@ class ProjectController extends Controller
     {
 
         return view('admin.projects.show', compact('project'));
-    
     }
 
     /**
@@ -71,9 +74,13 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        
-        return view('admin.projects.edit', compact('project'));
 
+        if ($project->user_id == auth()->id()) {
+            $categories = Category::all();
+
+            return view('admin.projects.edit', compact('project', 'categories'));
+        }
+        abort(403, 'Not authorize to this page');
     }
 
     /**
@@ -82,27 +89,28 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
 
+        if(auth()->id() != $project->user_id){
+            abort(403, 'You tried');
+        }
+
         $validated = $request->validated();
-        
 
-        if ($request->has('cover_image')){
 
-            if($project->cover_image){
+        if ($request->has('cover_image')) {
+
+            if ($project->cover_image) {
 
                 Storage::delete($project->cover_image);
-
             }
 
             $image_path = Storage::put('uploads', $request->cover_image);
 
             $validated['cover_image'] = $image_path;
-
         }
 
         $project->update($validated);
 
         return to_route('admin.projects.index')->with('message', 'Project updated succesfully');
-
     }
 
     /**
@@ -110,17 +118,18 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        
-        if($project->cover_image && !Str::startsWith($project->cover_image, 'https://')){
+
+        if(auth()->id() != $project->user_id){
+            abort(403, 'Nada amigo');
+        }
+
+        if ($project->cover_image && !Str::startsWith($project->cover_image, 'https://')) {
 
             Storage::delete($project->cover_image);
-
         }
 
         $project->delete();
 
         return to_route('admin.projects.index')->with('message', 'Project deleted!');
-
-
     }
 }

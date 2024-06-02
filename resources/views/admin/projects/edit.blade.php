@@ -30,6 +30,15 @@
         @enderror
     </div>
     <div class="mb-3">
+        <label for="category_id" class="form-label fs-5 fw-bold">Category</label>
+        <select class="form-select form-select-lg" name="category_id" id="category_id">
+            <option selected>Select one</option>
+            @foreach ($categories as $category)
+            <option value="{{$category->id}}" {{$category->id == old('category_id', $project->category?->id) ? 'selected' : ''}}>{{$category->name}}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="mb-3">
         <label for="description" class="form-label fs-5 fw-bold">Description</label>
         <textarea type="text" class="form-control border-3 border-dark-subtle" name="description" id="description" rows="6" cols="100">{{old('description', $project->description)}}</textarea>
         @error('description')

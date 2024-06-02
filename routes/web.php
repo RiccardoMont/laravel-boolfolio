@@ -21,15 +21,31 @@ Route::get('/', function () {
 });
 
 
+//Dovuto creare una rotta a parte per la dashboard. Causa malfunzionamento con il rename admin
+Route::middleware(['auth', 'verified']) 
+->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+});
+
+
 Route::middleware(['auth', 'verified'])
 ->name('admin.')
 ->prefix('admin')
-->group(function() {
+->group(function () {
 
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    //NOT WORKING
+    /*Route::get('/', function () {
+        return view('dashboard');
+    });*/
+    //Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     //http://localhost:8000/admin
 
     Route::resource('projects', ProjectController::class);
+
+    //NOT WORKING
+    //Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 });
 

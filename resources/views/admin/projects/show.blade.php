@@ -13,6 +13,10 @@
         @endif
         <div class="col-6 position-relative px-4">
             <h3 class="text-uppercase fw-bold">{{$project->name}}</h3>
+            <div class="metadata">
+                <strong>Category:</strong>
+                <em>{{$project->category ? $project->category->name : 'N/A'}}</em>
+            </div>
             <p class="text-break">{{$project->description ?? 'N/A'}}</p>
             <div class="d-flex justify-content-between">
                 <a class="btn btn-primary" href="{{$project->project_url}}" target="_blank">Project Url</a>
