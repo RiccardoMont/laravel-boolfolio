@@ -96,6 +96,7 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
 
+        dd($request->all());
         if(auth()->id() != $project->user_id){
             abort(403, 'You tried');
         }

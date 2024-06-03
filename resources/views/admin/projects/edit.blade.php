@@ -43,17 +43,21 @@
             <label class="form-label fs-5 fw-bold">Technologies</label>
         </div>
         <div class="d-flex gap-3">
-        @foreach ($technologies as $tech)
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="{{$tech->id}}" id="tech-{{$tech->id}}" name="technologies[]" {{ in_array($tech->id, old('technologies',[]))  ? 'checked' : '' }} />
-            <label class="form-check-label" for="tech-{{$tech->id}}">{{$tech->name}}</label>
-        </div>
-        @endforeach
+            @foreach ($technologies as $tech)
+            <div class="form-check">
+                @if($errors->any())
+                <input class="form-check-input" type="checkbox" value="{{$tech->id}}" id="tech-{{$tech->id}}" name="technologies[]" {{ in_array($tech->id, old('technologies', []))  ? 'checked' : '' }} />
+                @else
+                <input class="form-check-input" type="checkbox" value="{{$tech->id}}" id="tech-{{$tech->id}}" name="technologies[]" {{ $project->technologies->contains($tech) ? 'checked' : '' }} />
+                @endif
+                <label class="form-check-label" for="tech-{{$tech->id}}">{{$tech->name}}</label>
+            </div>
+            @endforeach
         </div>
         @error('technologies')
         <div class="text-danger">{{$message}}</div>
         @enderror
-    </div>  
+    </div>
     <div class="mb-3">
         <label for="description" class="form-label fs-5 fw-bold">Description</label>
         <textarea type="text" class="form-control border-3 border-dark-subtle" name="description" id="description" rows="6" cols="100">{{old('description', $project->description)}}</textarea>

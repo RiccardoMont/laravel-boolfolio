@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,8 @@ Route::middleware(['auth', 'verified'])
     //http://localhost:8000/admin
 
     Route::resource('projects', ProjectController::class);
+
+    Route::resource('categories', CategoryController::class);
 
 });
 

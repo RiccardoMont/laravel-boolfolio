@@ -3,9 +3,10 @@
 @section('content')
 
 
-
-<h1>Project</h1>
-
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h1>Project</h1>
+    <a role="button" class="btn btn-primary rounded" href="{{route('admin.projects.create')}}">Add New Project</a>
+</div>
 @include('partials.session-message')
 
 <table class="table table-striped my-5">
@@ -22,24 +23,37 @@
     </tr>
     @forelse($projects as $project)
     <tr>
+        <!--ID-->
         <td>{{$project->id}}</td>
+        <!--CATEGORIES-->
         <td>
             {{$project->category ? $project->category->name : 'N/A'}}
         </td>
+        <!--TECHS-->
         <td>
             @include('partials.pills')
         </td>
+        <!--NAME-->
         <td>{{$project->name}}</td>
+        <!--IMAGE-->
         <td>
             @if (Str::startsWith($project->cover_image, 'https://'))
-            <img loading="lazy" width="120px" src="{{$project->cover_image}}" alt="">
+            <a href="{{route('admin.projects.show', $project)}}">
+                <img loading="lazy" width="120px" src="{{$project->cover_image}}" alt="">
+            </a>
             @else
-            <img loading="lazy" width="120px" src="{{asset('storage/' . $project->cover_image)}}" alt="">
+            <a href="{{route('admin.projects.show', $project)}}">
+                <img loading="lazy" width="120px" src="{{asset('storage/' . $project->cover_image)}}" alt="">
+            </a>
             @endif
         </td>
+        <!--DESCRIPTION-->
         <td>{{$project->description}}</td>
+        <!--PROJECT_URL-->
         <td>{{$project->project_url}}</td>
+        <!--SOURCE_CODE_URL-->
         <td>{{$project->source_code_url}}</td>
+        <!--ACTIONS-->
         <td class="col-1">
             <a href="{{route('admin.projects.edit', $project)}}"><i class="fa-solid fa-pencil text-secondary"></i></a>
             <a href="{{route('admin.projects.show', $project)}}"><i class="fa-solid fa-eye text-primary"></i></a>
@@ -85,8 +99,17 @@
 
 
 <style type="text/css">
+    img {
+        cursor: pointer;
+    }
+
     i {
         margin-left: 5px;
         cursor: pointer;
+        opacity: 0.5;
+    }
+
+    i:hover {
+        opacity: 1;
     }
 </style>

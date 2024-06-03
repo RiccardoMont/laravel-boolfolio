@@ -4,7 +4,7 @@
 
 
 
-<div class="mt-4">
+<div class="my-4">
     <div class="d-flex justify-content-between">
         @if (Str::startsWith($project->cover_image, 'https://'))
         <img loading="lazy" class="rounded" width="100%" src="{{$project->cover_image}}" alt="">
